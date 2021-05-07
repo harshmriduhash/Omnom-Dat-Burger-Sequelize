@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<script src="https://code.jquery.com/jquery.js"></script>
+	<!-- Compiled and minified CSS -->
+  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  	<!-- Compiled and minified JavaScript -->
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+	<script src="assets/js/poop.js"></script>
+	<script src="assets/js/moment.min.js"></script>
+	<link rel="stylesheet" href="assets/css/style.css" type="text/css">
+	<link rel="stylesheet" href="assets/css/animate.css" type="text/css">
+	<title>Omnom Dat Burger</title>
+</head>
+<body>
+{{{body}}}
+</body>
+<script type="text/javascript">
+
+    $(document).ready(function(){
+    	$('.modal').modal();
+     	$('.slider').slider();
+   	    if(!$.trim( $('#undevoured-burgers').html()).length) {
+	    	$('#undevoured-burgers').append('<h5 class="col s12 animated slideInUp center-align">No Burgers left to injest. Try adding a burger!</h5>');
+	    }
+	    if(!$.trim( $('#devoured-burgers').html()).length) {
+	    	$('#devoured-burgers').append('<div class="col s12 animated slideInUp">No Burgers have been injested</div>');
+	    }
+	    getBurgerGifs();
+    });
+
+    function getBurgerGifs(){
+    	var rand = Math.floor(Math.random()*50);
+    	var queryURL = 'https://api.giphy.com/v1/gifs/search?q=burger&api_key=dc6zaTOxFJmzC&MPAA=R&limit=100&offset='+rand+''
+    	$.ajax({
+	    	url: queryURL,
+	    	method: "GET"
+    	}).done(function(response) {
+	    	console.log(response);
+	    	var gifsArray = response.data;
+	    	$('.smol-img').each(function(index){
+	    			$(this).attr('src', gifsArray[index].images.downsized.url);	
+	    	})
+	    });
+    }
+
+	console.log('poop');
+	$('.delete').on('click', function(){
+		var tempId = $(this).attr('burgerId');
+		var objToSend = {
+			id: tempId
+		}
+		console.log(objToSend);
+		$.post('/api/delete', objToSend).then(function(data){
+			location.reload();
+			console.log(data);
+		})
+	})
+
+	$('#submitBurger').on('click', function(){
+		event.preventDefault();
+		var name = $('#name').val().trim();
+		var owner = $('#owner').val().trim();
+		if(name.length && owner.length > 0){
+			var objToSend = {
+				name: name,
+				owner: owner,
+				dob: moment().format('MMM Do YYYY, hh:mm:ss a')
+			}
+			// console.log(objToSend);
+			$.ajax({
+				url: '/api/new',
+				type: 'POST',
+				data: objToSend
+			}).then(function(data){
+				// console.log(data);
+				location.reload();
+			})
+		}
+		else{
+			console.log('need an input for owner and burger name');
+		}
+	})
+
+	$('.devour').on('click', function(){
+		var burgerId = $(this).attr('burgerId');
+		var burgerName = $(this).attr('burgerName');
+		var dob = moment($(this).attr('dob'), 'MMM Do YYYY, hh:mm:ss a');
+		var ageDays = moment().diff(dob, 'days');
+		var ageYears = moment().diff(dob, 'years');
+		// console.log(moment().diff(dob, 'days'));
+		if(ageDays < 2){
+			$('#good-burger-name').empty();
+			$('#good-burger-name').append(burgerName);
+			$('#simplyDevour').attr('burgerId', burgerId);
+			$('#modal5').modal('open');
+		}
+		else{
+			if(ageDays < 729){
+				$('#bad-burger-name').empty();
+				$('#bad-burger-name').append(burgerName);
+				$('#trulyDevour').attr('burgerId', burgerId);
+				$('#burger-age').empty();
+				$('#burger-age').append(ageDays+' days ago...')
+				$('#modal4').modal('open');
+			}
+			else{
+				$('#bad-burger-name').empty();
+				$('#bad-burger-name').append(burgerName);
+				$('#trulyDevour').attr('burgerId', burgerId);
+				$('#burger-age').empty();
+				$('#burger-age').append(ageYears+' years ago...')
+				$('#modal4').modal('open');
+			}
+		}
+	})
+
+	$('#simplyDevour').on('click', function(){
+		var burgerId = $(this).attr('burgerId');
+		devour(burgerId);
+	})
+	$('#trulyDevour').on('click', function(){
+		var burgerId = $(this).attr('burgerId');
+		devour(burgerId);
+	})
+
+	function devour(id){
+		var objToSend = {
+			id: id,
+			dod: moment().format('MMM Do YYYY, hh:mm:ss a')
+		}
+		console.log(objToSend);
+		$.ajax({
+			url: '/api/devour',
+			type: 'PUT',
+			data: objToSend
+		}).then(function(data){
+			location.reload();
+			console.log(data);
+		})
+	}
+
+	$('#check-date').on('click', function(){
+		event.preventDefault();
+		console.log(moment().format('MMM Do YYYY, hh:mm:ss a'));
+		var now = moment();
+		var date = moment('Feb 11th 2000, 12:17:22 am', 'MMM Do YYYY, hh:mm:ss a');
+		var dob = moment('Feb 17th 2018, 12:17:22 am', 'MMM Do YYYY, hh:mm:ss a');
+		var dod = moment('Feb 17th 2018, 12:18:10 am', 'MMM Do YYYY, hh:mm:ss a');
+		console.log(date.fromNow());
+		var diff = dod.diff(dob, 'seconds');
+		console.log('diff '+diff);
+	})
+</script>
+</html>

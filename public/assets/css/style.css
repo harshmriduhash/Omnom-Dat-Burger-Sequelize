@@ -1,0 +1,63 @@
+.rounded {
+	border-radius: 500px;
+}
+
+.pushDownFull {
+	height: 100vh;
+	width: 100vw;
+}
+
+.smol-margin {
+	margin-top: 6px;
+	margin-bottom: 6px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.smol-bottom-margin {
+	margin-bottom: 10px;
+}
+
+::-webkit-scrollbar {
+display: none;
+}
+
+.smol-img{
+	height: 150px;
+	width: auto;
+}
+
+/*.devour{
+	width: 150px;
+}*/
+
+.smol-padding-sides{
+	padding-right: 11.25px;
+	padding-left: 11.25px;
+}
+
+.no-side-padding{
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+}
+
+.modal-custom {
+	width: 300px !important;
+	height: auto !important;
+}
+
+.modal-content-custom {
+	padding-bottom: 0px !important;
+}
+
+.smol-bottom-margin {
+	margin-bottom: 10px !important;
+}
+
+.smol-top-margin {
+	margin-top: 10px !important;
+}
+
+.label-custom {
+	position: static;
+}

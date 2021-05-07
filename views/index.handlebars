@@ -1,0 +1,142 @@
+{{!-- <div class="pushDownFull"></div> --}}
+
+<div class="container">
+	<div class="slider fullscreen">
+		<ul class="slides">
+			<li>
+				<img src="assets/img/background1.jpg">
+				<div class="caption center-align">
+					<h3>You're Here to Eat a Burger!</h3>
+					<div class="row">
+						<button data-target="modal2" class="smol-margin btn blue modal-trigger animated infinite pulse">Devour a Burger</button>
+						<button data-target="modal1" class="smol-margin btn red modal-trigger">Add a Burger</button>
+						<button data-target="modal3" class="smol-margin btn red modal-trigger">Burger Cemetery</button>
+						{{!-- <button id="check-date" class="smol-margin btn red">Date</button> --}}
+					</div>
+					<h5 class="light grey-text text-lighten-3">Click on Devour A Burger to eat someone's (or your own) burger!</h5>
+				</div>
+			</li>
+			<li>
+				<img src="assets/img/background2.jpg">
+				<div class="caption left-align">
+					<h3 class="black-text">You Can Also Add a Burger!</h3>
+					<div class="row">
+						<button data-target="modal2" class="smol-margin btn blue modal-trigger">Devour a Burger</button>
+						<button data-target="modal1" class="smol-margin btn red modal-trigger animated infinite pulse">Add a Burger</button>
+						<button data-target="modal3" class="smol-margin btn blue modal-trigger">Burger Cemetery</button>
+					</div>
+					<h5  class="light black-text">Click on Add a Burger so other people (or you) can eat a burger!</h5>
+				</div>
+			</li>
+			<li>
+				<img src="assets/img/background3.jpg">
+				<div class="caption right-align">
+					<h3 class="purple-text text-darken-2">RIP (Rest In Poop) Burgers</h3>
+					<div class="row">
+						<button data-target="modal2" class="smol-margin btn black modal-trigger">Devour a Burger</button>
+						<button data-target="modal1" class="smol-margin btn black modal-trigger">Add a Burger</button>
+						<button data-target="modal3" class="smol-margin btn pink darken-4 modal-trigger animated infinite pulse">Burger Cemetery</button>
+					</div>
+					<h5 class="purple-text text-darken-2">Click on Burger Cemetery to see some recently murdered burgers...</h5>
+				</div>
+			</li>
+		</ul>
+	</div>
+
+	<div id="modal1" class="modal modal-custom">
+		<div class="modal-content modal-content-custom">
+			<h4 class="animated slideInUp center-align">Add a burger</h4>
+			<form>
+				<div class="row">
+					{{!-- <div class="col s0 m3 l4"></div>
+					<div class="input-field col s12 m6 l4 center-align no-side-padding"> --}}
+					<div class="input-field col s12 center-align no-side-padding smol-top-margin">	
+						<input class="animated slideInUp smol-bottom-margin" type="text" id="owner" data-length="30">
+						<label for="owner">Chef's Name</label>
+					</div>
+				</div>
+				<div class="row">
+					{{!-- <div class="col s0 m3 l4"></div> --}}
+					{{!-- <div class="input-field col s12 m6 l4 center-align no-side-padding"> --}}
+					<div class="input-field col s12 center-align no-side-padding smol-top-margin">	
+						<input class="animated slideInUp smol-bottom-margin" type="text" id="name" data-length="30">
+						<label for="name">Name of Burger</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col s0 m3 l4"></div>
+					{{!-- <div class="col s12 center-align"> --}}
+					{{!-- <button class="col s12 m6 l4 btn-large blue animated slideInUp waves-effect waves-light" id="submitBurger">Submit</button> --}}
+					<button class="col s12 btn-large blue animated slideInUp waves-effect waves-light" id="submitBurger">Submit</button>
+					{{!-- </div> --}}
+				</div>
+			</form>		
+		</div>
+	</div>
+
+	<div id="modal2" class="modal bottom-sheet yellow">
+		<div class="modal-content">	
+			<h4 class="animated slideInUp center-align">~Delicious Burgers To Devour~</h4>
+			<div class="row" id="undevoured-burgers">
+			{{#each burgers}}
+				{{#unless devoured}}
+				<div class="animated slideInUp col s12 m6 l4 smol-bottom-margin center-align">
+					<img src="" class="smol-img" datai="{{@index}}">
+					<div><strong>{{name}} Burger</strong></div>
+					<div>Chef: {{owner}}</div>
+					<div>DOB: {{dob}}</div>
+					<button class="devour btn green" burgerName="{{name}}" burgerId="{{id}}" dob="{{dob}}">Devour</button>
+					{{!-- <button class="delete btn red rounded" burgerId="{{id}}">Delete</button> --}}
+				</div>
+				{{/unless}}
+			{{/each}}
+			</div>
+		</div>
+	</div>
+
+	<div id="modal3" class="modal bottom-sheet red">
+		<div class="modal-content">
+			<h4 class="animated slideInUp center-align">...Burger Cemetery...</h4>
+			<div class="row" id="devoured-burgers">
+			{{#each boogers}}
+				{{#if devoured}}
+				<div class="animated slideInUp col s12 m6 l4 smol-bottom-margin center-align">
+					<img src="" class="smol-img" datai="{{@index}}">
+					<div><strong>{{name}} Burger</strong></div>
+					<div>Chef: {{owner}}</div>
+					<div>DOB: {{dob}}</div>
+					<div>DOD: {{dod}}</div>
+					{{!-- <button class="delete btn red rounded" burgerId="{{id}}">Delete</button> --}}
+				</div>
+				{{/if}}	
+			{{/each}}
+			</div>
+		</div>
+	</div>
+
+	<div id="modal4" class="modal black">
+		<div class="modal-content">
+			<h4 class="animated flash infinite center-align red-text text-lighten-3">WARNING!!! <strong><span id="bad-burger-name"></span> Burger!!!</h4>
+			<div class="center-align">
+				<img src="assets/img/nastypatty.png" class="responsive-img animated pulse infinite">
+				<h4 class="animated shake infinite red-text text-lighten-3">This burger was made <span id="burger-age"></span></h4>
+			</div>
+			<div class="row center-align">
+				<button id="trulyDevour" class="btn-large red center-align waves-effect waves-light" burgerId="">IDGAF! EAT IT!</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="modal5" class="modal green animated tada">
+		<div class="modal-content">
+			<h4 class="center-align white-text">A nice and juicy burger!</h4>
+			<div class="center-align">
+				<img class="" src="assets/img/krabbypatty.jpg" class="responsive-img">
+				<h4 class="white-text">Would you like to eat <strong><span id="good-burger-name"></span> Burger?</strong></h4>
+			</div>
+			<div class="row center-align">
+				<button id="simplyDevour" class="btn-large red center-align waves-effect waves-light" burgerId="">YUM! EAT IT!</button>
+			</div>
+		</div>
+	</div>
+</div>
